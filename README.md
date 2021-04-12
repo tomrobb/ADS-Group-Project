@@ -3,9 +3,9 @@
 
 Group Members:
 - Aaron Readman
+- Brian Bredican
 - Ralph Swords
 - Tom Roberts
-- .
 
 ----------------------
 
