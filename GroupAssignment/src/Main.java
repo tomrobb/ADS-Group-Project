@@ -66,7 +66,7 @@ public class Main {
 					try
 					{
 
-						System.out.println("Input the unique stop Id for the starting destinationg,press enter and then do the same for the end destination");
+						System.out.println("Input the unique stop Id for the starting destination, press enter and then do the same for the end destination");
 						String start=inputScanner.nextLine();;
 						String stop=inputScanner.nextLine();;
 
