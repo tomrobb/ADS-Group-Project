@@ -19,6 +19,7 @@ public class BusGraph {
         }
         // sort the adjacency list by stop_id
         adjacencyList.sort(new AdjacencyComparator());
+        timesList.sort(new StopTimesComparator());
         // add edges to the adjacency list
         addStopTimes(timesList);
         addTransfers(transferList);
@@ -211,6 +212,16 @@ public class BusGraph {
         @Override
         public int compare(AdjacencyListNode node1, AdjacencyListNode node2) {
             return node1.getStopId() - node2.getStopId();
+        }
+    }
+    
+    private class StopTimesComparator implements Comparator<StopTimes>{
+        @Override
+        public int compare(StopTimes time1, StopTimes time2){
+            if(time1.getTripId() != time2.getTripId()){
+                return time1.getTripId() - time2.getTripId();
+            }
+            else return time1.getStopSequence() - time2.getStopSequence();
         }
     }
 }
