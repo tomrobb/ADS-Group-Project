@@ -7,6 +7,8 @@ public class StopTimes {
     private int tripId;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
+    private String arrivalTimeString;
+    private String departureTimeString;
     private int stopId;
     private int stopSequence;
     private int pickUpType;
@@ -23,6 +25,22 @@ public class StopTimes {
         String[] inputArray = inputLine.split(",");
 
         // assign the data to variables
+        try{
+            this.arrivalTimeString =inputArray[1];
+        }
+        catch (Exception e){
+            
+        }
+        
+        try{
+            this.departureTimeString =inputArray[2];
+        }
+        catch (Exception e){
+            
+        }
+        
+        
+        
          try{
              this.tripId = Integer.parseInt(inputArray[0]);
          }
@@ -114,6 +132,14 @@ public class StopTimes {
 
     public double getDistance() {
         return distance;
+    }
+    
+    public String getArrivalTimeString() {
+    	return arrivalTimeString;
+    }
+    
+    public String getDepartureTimeString() {
+    	return departureTimeString;
     }
 
 }
