@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ArrivalTimes {
 	
-		
+		 
 // converts file to arraylist	
 public static ArrayList<String> fileToArrayList(String filename) throws FileNotFoundException, IOException{
 		
