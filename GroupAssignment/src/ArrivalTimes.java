@@ -56,13 +56,15 @@ public static ArrayList<String> tripInfo(String timeOfArrival) throws FileNotFou
 		
 		String index  =fullList.get(i);
 		StopTimes StopTimeobject =new StopTimes(index);
-		LocalTime busTime =StopTimeobject.getArrivalTime();
+		//LocalTime busTime =StopTimeobject.getArrivalTime();
+		String busTime =StopTimeobject.getArrivalTimeString();
 
 		try {
-		if (time.compareTo(busTime) == 0) {
+		if (timeOfArrival.equalsIgnoreCase(busTime)) {
 			
-			LocalTime dep =StopTimeobject.getDepartureTime();
-			String depTime =dep.toString();
+			//LocalTime dep =StopTimeobject.getDepartureTime();
+			//String depTime =dep.toString();
+			String depTime =StopTimeobject.getDepartureTimeString();
 			
 			
 			 String info = "Trip id: " + Integer.toString(StopTimeobject.getTripId())  
