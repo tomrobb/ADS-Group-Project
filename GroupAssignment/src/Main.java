@@ -212,6 +212,12 @@ public class Main {
 				else if(inputFunction.equals("3"))//Search for All Trips
 				{
 					
+					
+					
+					
+					try
+					{
+					
 					System.out.println("Input the specific time you want to search for in the format: hh:mm:ss   An example would be: 5:25:50");
 					String inputTime=inputScanner.nextLine();;
 					
@@ -222,6 +228,14 @@ public class Main {
 
 						System.out.println(arrivalTimesList.get(i));
 					}
+					
+					}
+					catch(java.time.format.DateTimeParseException e) {
+						System.out.println("Incorrect Input");
+					}
+					
+					
+					
 
 				}
 				else
