@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,9 +12,11 @@ public class Main {
 	public static ArrayList<Transfer> transfers = new ArrayList<Transfer>();
 	public static ArrayList<StopTimes> stopTimes = new ArrayList<StopTimes>();
 	public static TST tst = new TST();
+	
+	
+//	public static ArrivalTimes ATs = new ArrivalTimes();
 
-
-	public static void main(String[] args) 
+	public static void main(String[] args) throws FileNotFoundException, IOException 
 
 	{
 
@@ -208,6 +211,17 @@ public class Main {
 				}
 				else if(inputFunction.equals("3"))//Search for All Trips
 				{
+					
+					System.out.println("Input the specific time you want to search for in the format: hh:mm:ss   An example would be: 5:25:50");
+					String inputTime=inputScanner.nextLine();;
+					
+					ArrayList<String> arrivalTimesList = new ArrayList<String>();
+					arrivalTimesList=ArrivalTimes.tripInfo(inputTime);
+					
+					for (int i = 0; i < arrivalTimesList.size(); i++) {
+
+						System.out.println(arrivalTimesList.get(i));
+					}
 
 				}
 				else
