@@ -4,6 +4,8 @@ import java.util.*;
 public class BusGraph {
     // adjacency list for the graph
     ArrayList<AdjacencyListNode> adjacencyList;
+    HashSet<Integer> uniqueStopIds;
+    boolean invalidInput;
 
     /**
      * Constructor for BusGraph
@@ -13,16 +15,27 @@ public class BusGraph {
      */
     public BusGraph(ArrayList<Stops> stopList, ArrayList<Transfer> transferList, ArrayList<StopTimes> timesList){
         adjacencyList = new ArrayList<AdjacencyListNode>();
+        uniqueStopIds = new HashSet<Integer>();
+        invalidInput = false;
         // initialise the adjacency list
         for(int i = 0; i < stopList.size(); i++){
-            adjacencyList.add(new AdjacencyListNode(stopList.get(i), stopList.get(i).stop_id));
+            if(!uniqueStopIds.contains(stopList.get(i).stop_id)) {
+                adjacencyList.add(new AdjacencyListNode(stopList.get(i), stopList.get(i).stop_id));
+                uniqueStopIds.add(stopList.get(i).stop_id);
+            }
+            else{
+                System.out.println("This data set contains repeated stop IDs. Ensure that stop IDs are unique");
+                invalidInput = true;
+            }
         }
-        // sort the adjacency list by stop_id
-        adjacencyList.sort(new AdjacencyComparator());
-        timesList.sort(new StopTimesComparator());
-        // add edges to the adjacency list
-        addStopTimes(timesList);
-        addTransfers(transferList);
+        if(!invalidInput) {
+            // sort the adjacency list by stop_id
+            adjacencyList.sort(new AdjacencyComparator());
+            timesList.sort(new StopTimesComparator());
+            // add edges to the adjacency list
+            addStopTimes(timesList);
+            addTransfers(transferList);
+        }
     }
 
     /**
@@ -83,15 +96,21 @@ public class BusGraph {
     private void addStopTimes(ArrayList<StopTimes> timesList){
         int currentTrip = -1;
         int previousStop = -1;
-        for(int i = 0; i < timesList.size(); i++){
+        for(int i = 0; i < timesList.size() && !invalidInput; i++){
             StopTimes newStopTime = timesList.get(i);
             // if this stop is on the same route as the previous stop, then a new edge is created between them
             if(newStopTime.getTripId() == currentTrip){
-                int index = Collections.binarySearch(adjacencyList, new AdjacencyListNode(null,previousStop),
-                        new AdjacencyComparator());
-                AdjacencyListNode addEdge = adjacencyList.get(index);
-                addEdge.addEdge(newStopTime.getStopId(), 1);
-                adjacencyList.set(index, addEdge);
+                if(uniqueStopIds.contains(previousStop) && uniqueStopIds.contains(newStopTime.getStopId())) {
+                    int index = Collections.binarySearch(adjacencyList, new AdjacencyListNode(null, previousStop),
+                            new AdjacencyComparator());
+                    AdjacencyListNode addEdge = adjacencyList.get(index);
+                    addEdge.addEdge(newStopTime.getStopId(), 1);
+                    adjacencyList.set(index, addEdge);
+                }
+                else{
+                    System.out.println("Data contains an edge to or from a stop that doesn't exist");
+                    invalidInput = true;
+                }
             }
             // otherwise, we update the current trip
             else{
@@ -106,18 +125,24 @@ public class BusGraph {
      * @param transferList: A list of transfers.
      */
     private void addTransfers(ArrayList<Transfer> transferList){
-        for(int i = 0; i < transferList.size(); i++){
+        for(int i = 0; i < transferList.size() && !invalidInput; i++){
             Transfer newTransfer = transferList.get(i);
-            int index = Collections.binarySearch(adjacencyList, new AdjacencyListNode(null, newTransfer.getFromStopId()),
-                    new AdjacencyComparator());
-            AdjacencyListNode addEdge = adjacencyList.get(index);
-            // if the transfer is type 2, then make the weight 2
-            if(newTransfer.getTransferType()==0){
-                addEdge.addEdge(newTransfer.getToStopId(), 2);
+            if(uniqueStopIds.contains(newTransfer.getFromStopId()) && uniqueStopIds.contains(newTransfer.getToStopId())) {
+                int index = Collections.binarySearch(adjacencyList, new AdjacencyListNode(null, newTransfer.getFromStopId()),
+                        new AdjacencyComparator());
+                AdjacencyListNode addEdge = adjacencyList.get(index);
+                // if the transfer is type 2, then make the weight 2
+                if (newTransfer.getTransferType() == 0) {
+                    addEdge.addEdge(newTransfer.getToStopId(), 2);
+                }
+                // otherwise, calculate the weight from the transfer time
+                else addEdge.addEdge(newTransfer.getToStopId(), newTransfer.getTransferTime() / 100);
+                adjacencyList.set(index, addEdge);
             }
-            // otherwise, calculate the weight from the transfer time
-            else addEdge.addEdge(newTransfer.getToStopId(), newTransfer.getTransferTime()/100);
-            adjacencyList.set(index, addEdge);
+            else{
+                System.out.println("Data contains an edge to or from a stop that doesn't exist");
+                invalidInput = true;
+            }
         }
     }
 
@@ -214,7 +239,7 @@ public class BusGraph {
             return node1.getStopId() - node2.getStopId();
         }
     }
-    
+
     private class StopTimesComparator implements Comparator<StopTimes>{
         @Override
         public int compare(StopTimes time1, StopTimes time2){
