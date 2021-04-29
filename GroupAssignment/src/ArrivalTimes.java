@@ -32,7 +32,7 @@ public static ArrayList<String> tripInfo(String timeOfArrival) throws FileNotFou
 	ArrayList<String> results =new ArrayList<String>();
 	//LocalTime time = LocalTime.parse(timeOfArrival);
 	
-	ArrayList<String> fullList =fileToArrayList("C:\\algo II\\\\inputs\\\\stop_times.txt");
+	ArrayList<String> fullList =fileToArrayList("stop_times.txt");
 	
 	//removing invalid hours
 	for(int i =1; i<fullList.size(); i++)
