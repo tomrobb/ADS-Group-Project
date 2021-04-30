@@ -2,7 +2,8 @@
 public class Stops {
 
 	// The Data that we're storing from stops.txt
-	// note: There are more columns of data, but they seem to be unused, like "stop_url"
+	// note: There are more columns of data, but they seem to be unused, like
+	// "stop_url"
 	int stop_id;
 	int stop_code;
 	String stop_name;
@@ -16,17 +17,19 @@ public class Stops {
 	// stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station
 	public Stops(String inputLine) {
 
-		//  splitting the input line since the data is comma seperated
+		// splitting the input line since the data is comma seperated
 		String[] inputValues = inputLine.split(",");
 
-		// There are try/catch loops around each parse instruction, because not all lines of stops.txt
-		// have valid entries, and it causes errors if we try to parse a string with no numbers, as a
+		// There are try/catch loops around each parse instruction, because not all
+		// lines of stops.txt
+		// have valid entries, and it causes errors if we try to parse a string with no
+		// numbers, as a
 		// double or integer.
 		//
 		// if the String can not be parsed as an integer, we set stop_id to be = -1;
 		try {
 			this.stop_id = Integer.parseInt(inputValues[0]);
-		} catch (Exception e){
+		} catch (Exception e) {
 			this.stop_id = -1;
 		}
 
@@ -66,10 +69,12 @@ public class Stops {
 
 		// for the word "FLAGSTOP "
 		if (input.charAt(0) == 'F' && input.charAt(1) == 'L' && input.charAt(2) == 'A' && input.charAt(3) == 'G'
-		&& input.charAt(4) == 'S' && input.charAt(5) == 'T' && input.charAt(6) == 'O' && input.charAt(7) == 'P'
-		&& input.charAt(8) == ' ') {
-			// we don't return the string, since flagstop can be followed by WB, NB, SB or EB too
-			input = input.substring(8) + " FLAGSTOP";
+				&& input.charAt(4) == 'S' && input.charAt(5) == 'T' && input.charAt(6) == 'O' && input.charAt(7) == 'P'
+				&& input.charAt(8) == ' ') {
+			// we don't return the string yet, since flagstop can be followed by WB, NB, SB
+			// or
+			// EB too
+			input = input.substring(9) + " FLAGSTOP";
 
 		}
 		// for keyword WB
@@ -87,46 +92,50 @@ public class Stops {
 		// for keyword WB
 		else if (input.charAt(0) == 'E' && input.charAt(1) == 'B' && input.charAt(2) == ' ') {
 			return input.substring(3) + " EB";
-		}
-		else
-		return input;
+		} else
+			return input;
 
 	}
-
 
 	// Public functions for returning specific Data
 	//
 	//
 	public String getID() {
-		if(stop_id == -1) {
+		if (stop_id == -1) {
 			return "N/A";
-		}
-		else return "" + this.stop_id;
+		} else
+			return "" + this.stop_id;
 	}
+
 	public String getCode() {
-		if(stop_code == -1) {
+		if (stop_code == -1) {
 			return "N/A";
-		}
-		else return "" + this.stop_code;
+		} else
+			return "" + this.stop_code;
 	}
+
 	public String getName() {
 		return this.stop_name;
 	}
+
 	public String getDesc() {
 		return this.stop_desc;
 	}
+
 	public String getLat() {
-		if(stop_lat == -1) {
+		if (stop_lat == -1) {
 			return "N/A";
-		}
-		else return "" + this.stop_lat;
+		} else
+			return "" + this.stop_lat;
 	}
+
 	public String getLon() {
-		if(stop_lon == -1) {
+		if (stop_lon == -1) {
 			return "N/A";
-		}
-		else return "" + this.stop_lon;
+		} else
+			return "" + this.stop_lon;
 	}
+
 	public String getZone() {
 		return this.zone_id;
 	}
